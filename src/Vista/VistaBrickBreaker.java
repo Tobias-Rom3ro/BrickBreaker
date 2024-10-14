@@ -59,8 +59,7 @@ public class VistaBrickBreaker extends JPanel implements MouseMotionListener, Ke
     }
 
     @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g); // Para limpiar el fondo correctamente
+     // Para limpiar el fondo correctamente
     public void paint(Graphics g) {
         super.paint(g); // Llamar a la superclase para que dibuje los componentes (como el botón)
 
@@ -94,7 +93,7 @@ public class VistaBrickBreaker extends JPanel implements MouseMotionListener, Ke
 
         // Nivel Actual
         g.drawString("Nivel: " + (modelo.getLevelManager().getNivelActualIndex() + 1), 50, 30);
-
+        g.drawString("Vidas: "+ modelo.getVidas(), 310, 30);
         // Verificar si se ganó el juego o se pasó al siguiente nivel
         if (!modelo.isPlay()) {
             if (modelo.getTotalBricks() <= 0) {
