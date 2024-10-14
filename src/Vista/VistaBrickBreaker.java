@@ -1,12 +1,10 @@
 package Vista;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
-import javax.swing.JPanel;
+import javax.swing.*;
+
 import Modelo.BrickBreaker;
 
 public class VistaBrickBreaker extends JPanel implements MouseMotionListener {
@@ -20,10 +18,15 @@ public class VistaBrickBreaker extends JPanel implements MouseMotionListener {
     }
 
     @Override
-    public void paint(Graphics g) {
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g); // Para limpiar el fondo correctamente
+
         // Fondo del juego
-        g.setColor(Color.BLACK);
-        g.fillRect(1, 1, 692, 592);
+        Dimension tamanio = getSize();
+        ImageIcon imagen = new ImageIcon(getClass().getResource("/resources/imagenes/FondoRetroMov.gif"));
+        g.drawImage(imagen.getImage(), 0, 0, tamanio.width, tamanio.height, this);
+
+        // El resto del código de dibujado (ladrillos, bordes, barra, bola, puntaje, etc.)
 
         // Dibujar ladrillos
         modelo.getMap().draw((Graphics2D) g);
@@ -62,24 +65,20 @@ public class VistaBrickBreaker extends JPanel implements MouseMotionListener {
             }
 
             // Verificar si se perdió el juego
-
             if (modelo.getBallposY() > 570) {
-                if(modelo.getVidas() > 0){
+                if (modelo.getVidas() > 0) {
                     modelo.decrementarVidas();
                     modelo.reiniciarPelota();
                     repaint();
-
                 }
-                if(modelo.getVidas() == 0){
+                if (modelo.getVidas() == 0) {
                     modelo.setPlay(false);
                     mostrarMensajeFinJuego(g, "Fin del juego. Puntaje: " + modelo.getScore(), "Presiona Enter para reiniciar.");
                 }
-
             }
         }
-
-        g.dispose();
     }
+
 
     private void mostrarMensajeFinJuego(Graphics g, String mensajePrincipal, String mensajeSecundario) {
         // Dibujar un rectángulo semi-transparente como fondo del mensaje
