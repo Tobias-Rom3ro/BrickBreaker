@@ -1,25 +1,68 @@
 package Vista;
 
+
 import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import javax.swing.*;
 
 import Modelo.BrickBreaker;
 
-public class VistaBrickBreaker extends JPanel implements MouseMotionListener {
+public class VistaBrickBreaker extends JPanel implements MouseMotionListener, KeyListener {
     private BrickBreaker modelo;
+    private boolean isPaused = false;
+    private Pausa pantallaPausa;
 
     public VistaBrickBreaker(BrickBreaker modelo) {
         this.modelo = modelo;
         setFocusable(true);
         requestFocusInWindow();
         addMouseMotionListener(this); // Añadir el listener de movimiento del ratón
+        addKeyListener(this); // Añadir el listener de teclado
+    }
+
+    private void pausarJuego() {
+        isPaused = true;
+        modelo.setPlay(false);
+        mostrarPantallaPausa();
+    }
+
+    private void mostrarPantallaPausa() {
+        pantallaPausa = new Pausa(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                reanudarJuego();
+            }
+        }, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Aquí puedes implementar la lógica para controlar el volumen
+                JOptionPane.showMessageDialog(pantallaPausa, "Control de volumen no implementado", "Info", JOptionPane.INFORMATION_MESSAGE);
+            }
+        });
+        pantallaPausa.setVisible(true);
+    }
+
+    private void reanudarJuego() {
+        isPaused = false;
+        modelo.setPlay(true);
+        pantallaPausa.dispose(); // Cerrar la pantalla de pausa
+        repaint();
     }
 
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g); // Para limpiar el fondo correctamente
+    public void paint(Graphics g) {
+        super.paint(g); // Llamar a la superclase para que dibuje los componentes (como el botón)
 
         // Fondo del juego
         Dimension tamanio = getSize();
@@ -51,7 +94,6 @@ public class VistaBrickBreaker extends JPanel implements MouseMotionListener {
 
         // Nivel Actual
         g.drawString("Nivel: " + (modelo.getLevelManager().getNivelActualIndex() + 1), 50, 30);
-        g.drawString("Vidas: " + modelo.getVidas(), 320, 30);
 
         // Verificar si se ganó el juego o se pasó al siguiente nivel
         if (!modelo.isPlay()) {
@@ -74,6 +116,8 @@ public class VistaBrickBreaker extends JPanel implements MouseMotionListener {
                     modelo.setPlay(false);
                     mostrarMensajeFinJuego(g, "Fin del juego. Puntaje: " + modelo.getScore(), "Presiona Enter para reiniciar.");
                 }
+
+                mostrarMensajeFinJuego(g, "Fin del juego. Puntaje: " + modelo.getScore(), "Presiona Enter para reiniciar.");
             }
         }
     }
@@ -94,7 +138,6 @@ public class VistaBrickBreaker extends JPanel implements MouseMotionListener {
         g.drawString(mensajeSecundario, 200, 350);
     }
 
-    // Implementación de MouseMotionListener
     @Override
     public void mouseDragged(MouseEvent e) {
         // No se utiliza, pero debe implementarse
@@ -102,26 +145,43 @@ public class VistaBrickBreaker extends JPanel implements MouseMotionListener {
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        int mouseX = e.getX();
-        // Limitar el movimiento de la barra dentro de los límites del panel
-        if (mouseX < 10) {
-            mouseX = 10;
-        } else if (mouseX > 600) {
-            mouseX = 600;
-        }
-        modelo.setPlayerX(mouseX);
+        if (!isPaused) {
+            int mouseX = e.getX();
+            // Limitar el movimiento de la barra dentro de los límites del panel
+            if (mouseX < 10) {
+                mouseX = 10;
+            } else if (mouseX > 600) {
+                mouseX = 600;
+            }
+            modelo.setPlayerX(mouseX);
 
-        // Si la pelota no ha sido lanzada, actualizar su posición para seguir la barra
-        if (!modelo.isBallLanzada()) {
-            modelo.setBallposX(mouseX + 40); // Centrar la pelota sobre la barra (100 de ancho de la barra / 2 - 10 de diámetro de la pelota)
-            modelo.setBallposY(550 - 20); // Posicionar justo encima de la barra
-        }
+            // Si la pelota no ha sido lanzada, actualizar su posición para seguir la barra
+            if (!modelo.isBallLanzada()) {
+                modelo.setBallposX(mouseX + 40); // Centrar la pelota sobre la barra (100 de ancho de la barra / 2 - 10 de diámetro de la pelota)
+                modelo.setBallposY(550 - 20); // Posicionar justo encima de la barra
+            }
 
-        repaint();
+            repaint();
+        }
     }
 
-    // Método opcional para actualizar la vista con más detalles si es necesario
-    public void actualizarVistaJuego(int[][] mapaLadrillos, int posicionJugador, int posicionBolaX, int posicionBolaY, int puntaje, int ladrillosRestantes, boolean juegoGanado, boolean juegoTerminado) {
-        repaint();
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_P) {
+            if (!isPaused) {
+                pausarJuego(); // Pausar el juego si no está pausado
+            }
+        }
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        // No se utiliza, pero debe implementarse
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+        // No se utiliza, pero debe implementarse
     }
 }
+
