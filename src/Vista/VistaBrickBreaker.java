@@ -111,7 +111,7 @@ public class VistaBrickBreaker extends JPanel implements MouseMotionListener, Ke
         // Puntaje
         g.setColor(Color.WHITE);
         g.setFont(new Font("serif", Font.BOLD, 25));
-        g.drawString("Puntaje: " + modelo.getScore(), 590, 30);
+        g.drawString("Puntaje: " + modelo.getScore(), 560, 30);
 
         // Nivel Actual
         g.drawString("Nivel: " + (modelo.getLevelManager().getNivelActualIndex() + 1), 50, 30);
