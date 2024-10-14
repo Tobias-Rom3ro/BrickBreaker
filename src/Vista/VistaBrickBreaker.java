@@ -64,9 +64,16 @@ public class VistaBrickBreaker extends JPanel implements MouseMotionListener, Ke
         super.paint(g); // Llamar a la superclase para que dibuje los componentes (como el botón)
 
         // Fondo del juego
-        Dimension tamanio = getSize();
-        ImageIcon imagen = new ImageIcon(getClass().getResource("/resources/imagenes/FondoRetroMov.gif"));
-        g.drawImage(imagen.getImage(), 0, 0, tamanio.width, tamanio.height, this);
+        if(modelo.getLevelManager().getNivelActualIndex() + 1 == 1){
+            Dimension tamanio = getSize();
+            ImageIcon imagen = new ImageIcon(getClass().getResource("/resources/imagenes/FondoRetroMov.gif"));
+            g.drawImage(imagen.getImage(), 0, 0, tamanio.width, tamanio.height, this);
+        }else if(modelo.getLevelManager().getNivelActualIndex() + 1 == 2){
+            Dimension tamanio = getSize();
+            ImageIcon imagen = new ImageIcon(getClass().getResource("/resources/imagenes/pruebaFondoJuego.gif"));
+            g.drawImage(imagen.getImage(), 0, 0, tamanio.width, tamanio.height, this);
+        }
+
 
 
         // Dibujar ladrillos
