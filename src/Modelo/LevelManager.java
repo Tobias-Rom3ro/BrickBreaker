@@ -9,10 +9,8 @@ public class LevelManager {
 
     public LevelManager() {
         niveles = new ArrayList<>();
-        // Añade las rutas a tus archivos de nivel aquí
-        niveles.add("C:\\Users\\Acer\\Documents\\breakBreaker2.0\\BrickBreaker\\src\\resources\\nivel1.txt");
-        niveles.add("C:\\Users\\Acer\\Documents\\breakBreaker2.0\\BrickBreaker\\src\\resources\\nivel2.txt");
-        // Agrega más niveles según sea necesario
+        niveles.add("nivel1.txt");
+        niveles.add("nivel2.txt");
         nivelActual = 0;
     }
 
@@ -39,5 +37,4 @@ public class LevelManager {
     public int getNivelActualIndex() {
         return nivelActual;
     }
-
 }

@@ -4,8 +4,9 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 public class MapGenerator {
 
@@ -17,26 +18,32 @@ public class MapGenerator {
         // Inicialización vacía; se cargará mediante cargarNivel
     }
 
-    // Método para cargar un nivel desde un archivo
+    // Método para cargar un nivel desde un archivo en el classpath
     public void cargarNivel(String archivoNivel) {
-        try (BufferedReader br = new BufferedReader(new FileReader(archivoNivel))) {
+        try (InputStream is = getClass().getClassLoader().getResourceAsStream(archivoNivel);
+             BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
+
+            if (is == null) {
+                throw new IOException("No se pudo encontrar el archivo: " + archivoNivel);
+            }
+
             String linea;
             int filas = 0;
-            // Primer pase para contar filas y columnas
+            // Primer pase para contar filas
             while ((linea = br.readLine()) != null) {
                 filas++;
             }
             br.close();
 
             // Asumimos que todas las filas tienen el mismo número de columnas
-            BufferedReader br2 = new BufferedReader(new FileReader(archivoNivel));
+            BufferedReader br2 = new BufferedReader(new InputStreamReader(getClass().getClassLoader().getResourceAsStream(archivoNivel)));
             String primeraLinea = br2.readLine();
             int columnas = primeraLinea.trim().split("\\s+").length;
             map = new int[filas][columnas];
             br2.close();
 
             // Segundo pase para llenar el mapa
-            BufferedReader br3 = new BufferedReader(new FileReader(archivoNivel));
+            BufferedReader br3 = new BufferedReader(new InputStreamReader(getClass().getClassLoader().getResourceAsStream(archivoNivel)));
             int fila = 0;
             while ((linea = br3.readLine()) != null) {
                 String[] tokens = linea.trim().split("\\s+");
@@ -100,7 +107,6 @@ public class MapGenerator {
             // No llamar a BrickBreaker.incrementTotalBricks()
         }
     }
-
 
     // Getters
     public int getBrickWidth() {
