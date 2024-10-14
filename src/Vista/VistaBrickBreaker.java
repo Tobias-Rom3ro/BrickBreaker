@@ -25,8 +25,7 @@ public class VistaBrickBreaker extends JPanel implements MouseMotionListener {
         Dimension tamanio = getSize();
         ImageIcon imagen = new ImageIcon(getClass().getResource("/resources/imagenes/FondoRetroMov.gif"));
         g.drawImage(imagen.getImage(), 0, 0, tamanio.width, tamanio.height, this);
-
-        // El resto del código de dibujado (ladrillos, bordes, barra, bola, puntaje, etc.)
+        
 
         // Dibujar ladrillos
         modelo.getMap().draw((Graphics2D) g);
