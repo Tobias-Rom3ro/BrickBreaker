@@ -56,7 +56,7 @@ public class BrickBreaker {
     // Método para reiniciar la pelota
     public void reiniciarPelota() {
         this.ballposX = this.playerX + 40; // Centrar la pelota sobre la barra (100 de ancho de la barra / 2 - 10 de diámetro de la pelota)
-        this.ballposY = 550 - 20; // Posicionar justo encima de la barra
+        this.ballposY = 550 - 30; // Posicionar justo encima de la barra
         this.ballXdir = 0;
         this.ballYdir = 0;
         this.ballLanzada = false;
