@@ -22,7 +22,7 @@ public class Main {
         menu.setSize(800, 600);
         menu.setVisible(true);
         ControladorMenu controladorMenu = new ControladorMenu(meniu,menu, ventana);
-        ventana.setBounds(10, 10, 700, 600);
+        ventana.setBounds(10, 10, 710, 600);
         ventana.setTitle("Brick Breaker");
         ventana.setResizable(false);
         ventana.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

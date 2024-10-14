@@ -3,6 +3,7 @@ package Modelo;
 public class BrickBreaker {
     private boolean play;
     private int score;
+    private int vidas;
     private int totalBricks;
     private int playerX;
     private int ballposX;
@@ -16,6 +17,7 @@ public class BrickBreaker {
     public BrickBreaker() {
         this.play = false;
         this.score = 0;
+        this.vidas = 3;
         this.playerX = 310;
         this.ballposX = 310; // Posición inicial centrada sobre la barra
         this.ballposY = 550 - 20; // Posicionar justo encima de la barra
@@ -64,6 +66,7 @@ public class BrickBreaker {
     public void resetGame() {
         this.play = false;
         this.score = 0;
+        this.vidas = 3;
         this.playerX = 310;
         cargarNivelActual();
         reiniciarPelota();
@@ -82,8 +85,13 @@ public class BrickBreaker {
         return score;
     }
 
+    public int getVidas() { return vidas; }
+
     public void incrementScore(int value) {
         this.score += value;
+    }
+    public void decrementarVidas(){
+        this.vidas --;
     }
 
     public int getTotalBricks() {

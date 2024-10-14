@@ -49,6 +49,7 @@ public class VistaBrickBreaker extends JPanel implements MouseMotionListener {
 
         // Nivel Actual
         g.drawString("Nivel: " + (modelo.getLevelManager().getNivelActualIndex() + 1), 50, 30);
+        g.drawString("Vidas: " + modelo.getVidas(), 320, 30);
 
         // Verificar si se ganó el juego o se pasó al siguiente nivel
         if (!modelo.isPlay()) {
@@ -61,8 +62,19 @@ public class VistaBrickBreaker extends JPanel implements MouseMotionListener {
             }
 
             // Verificar si se perdió el juego
+
             if (modelo.getBallposY() > 570) {
-                mostrarMensajeFinJuego(g, "Fin del juego. Puntaje: " + modelo.getScore(), "Presiona Enter para reiniciar.");
+                if(modelo.getVidas() > 0){
+                    modelo.decrementarVidas();
+                    modelo.reiniciarPelota();
+                    repaint();
+
+                }
+                if(modelo.getVidas() == 0){
+                    modelo.setPlay(false);
+                    mostrarMensajeFinJuego(g, "Fin del juego. Puntaje: " + modelo.getScore(), "Presiona Enter para reiniciar.");
+                }
+
             }
         }
 
