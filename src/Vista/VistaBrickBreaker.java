@@ -13,6 +13,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import javax.swing.*;
+import java.net.URL;
 
 import Modelo.BrickBreaker;
 
@@ -20,9 +21,20 @@ public class VistaBrickBreaker extends JPanel implements MouseMotionListener, Ke
     private BrickBreaker modelo;
     private boolean isPaused = false;
     private Pausa pantallaPausa;
+    private Image imagenPelota;
+    private int anchoImg;
+    private int altoImg;
 
     public VistaBrickBreaker(BrickBreaker modelo) {
         this.modelo = modelo;
+        URL urlImagen = getClass().getClassLoader().getResource("resources/imagenes/bolitaMasPeque.png");
+        if (urlImagen != null) {
+            imagenPelota = new ImageIcon(urlImagen).getImage();
+            anchoImg = imagenPelota.getWidth(null);
+            altoImg = imagenPelota.getHeight(null);
+        } else {
+            System.err.println("No se pudo cargar la imagen de la pelota");
+        }
         setFocusable(true);
         requestFocusInWindow();
         addMouseMotionListener(this); // Añadir el listener de movimiento del ratón
@@ -91,7 +103,10 @@ public class VistaBrickBreaker extends JPanel implements MouseMotionListener, Ke
 
         // Bola
         g.setColor(Color.GREEN);
-        g.fillOval(modelo.getBallposX(), modelo.getBallposY(), 20, 20);
+        //g.fillOval(modelo.getBallposX(), modelo.getBallposY(), 20, 20);
+        if (imagenPelota != null) {
+            g.drawImage(imagenPelota, modelo.getBallposX(), modelo.getBallposY(), null);
+        }
 
         // Puntaje
         g.setColor(Color.WHITE);
@@ -164,7 +179,7 @@ public class VistaBrickBreaker extends JPanel implements MouseMotionListener, Ke
             // Si la pelota no ha sido lanzada, actualizar su posición para seguir la barra
             if (!modelo.isBallLanzada()) {
                 modelo.setBallposX(mouseX + 40); // Centrar la pelota sobre la barra (100 de ancho de la barra / 2 - 10 de diámetro de la pelota)
-                modelo.setBallposY(550 - 20); // Posicionar justo encima de la barra
+                modelo.setBallposY(550 - 30); // Posicionar justo encima de la barra
             }
 
             repaint();
