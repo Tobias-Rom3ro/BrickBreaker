@@ -14,7 +14,7 @@ public class ControladorBrickBreaker implements KeyListener, ActionListener {
     private BrickBreaker modelo;
     private VistaBrickBreaker vista;
     private Timer timer;
-    private final int delay = 10;
+    private final int delay = 3;
 
     public ControladorBrickBreaker(BrickBreaker modelo, VistaBrickBreaker vista) {
         this.modelo = modelo;
@@ -64,8 +64,11 @@ public class ControladorBrickBreaker implements KeyListener, ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (modelo.isPlay()) {
-            modelo.setBallposX(modelo.getBallposX() + modelo.getBallXdir());
-            modelo.setBallposY(modelo.getBallposY() + modelo.getBallYdir());
+// Actualizar posición de la pelota con velocidad moderada
+            modelo.setBallposX(modelo.getBallposX() + modelo.getBallXdir() * 2); // Multiplicar por 2 o un valor constante pequeño
+            modelo.setBallposY(modelo.getBallposY() + modelo.getBallYdir() * 2); // Multiplicar por 2 o un valor constante pequeño
+
+
 
             // Verificar colisiones con los bordes
             if (modelo.getBallposX() < 0 || modelo.getBallposX() > 670) {

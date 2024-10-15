@@ -184,9 +184,9 @@ public class VistaBrickBreaker extends JPanel implements MouseMotionListener, Ke
         if (!modelo.isPlay()) {
             if (modelo.getTotalBricks() <= 0) {
                 if (modelo.getLevelManager().hayMasNiveles()) {
-                    mostrarMensajeFinJuego(g, "¡Nivel Completado! Puntaje: " + modelo.getScore(), "Presiona Enter para el siguiente nivel.");
+                    mostrarMensajeFinJuego(g, "¡Nivel Completado! Puntaje: " + modelo.getScore(), "PRESIONA ENTER PARA EL SIGUIENTE NIVEL.");
                 } else {
-                    mostrarMensajeFinJuego(g, "¡Ganaste el Juego! Puntaje Total: " + modelo.getScore(), "Presiona Enter para reiniciar.");
+                    mostrarMensajeFinJuego(g, "¡Ganaste el Juego! Puntaje Total: " + modelo.getScore(), "PRESIONA ENTER PARA REINICIAR.");
                 }
             }
 

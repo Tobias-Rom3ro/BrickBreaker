@@ -99,13 +99,12 @@ public class BrickBreaker {
     public void decrementarVidas(){
         this.vidas --;
     }
+
     private void aumentarVelocidad() {
-        // Aumentar la velocidad en un porcentaje
-        ballposX += velocidadX;
-        ballposY += velocidadY;
-        velocidadX = (int) (velocidadX * 1.7); // Aumento del 70%
-        velocidadY = (int) (velocidadY * 1.7);
+        velocidadX = (int) (velocidadX * 1.05); // Incremento del 5%
+        velocidadY = (int) (velocidadY * 1.05); // Incremento del 5%
     }
+
 
     public int getTotalBricks() {
 
@@ -174,5 +173,13 @@ public class BrickBreaker {
 
     public MapGenerator getMap() {
         return map;
+    }
+
+    public int getVelocidadX() {
+        return velocidadX;
+    }
+
+    public int getVelocidadY() {
+        return velocidadY;
     }
 }
