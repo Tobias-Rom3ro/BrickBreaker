@@ -120,7 +120,7 @@ public class VistaBrickBreaker extends JPanel implements MouseMotionListener, Ke
             g.drawImage(imagen.getImage(), 0, 0, tamanio.width, tamanio.height, this);
         }else if(modelo.getLevelManager().getNivelActualIndex() + 1 == 2){
             Dimension tamanio = getSize();
-            ImageIcon imagen = new ImageIcon(getClass().getResource("/resources/imagenes/pruebaFondoJuego.gif"));
+            ImageIcon imagen = new ImageIcon(getClass().getResource("/resources/imagenes/video-retrowave-videogame-800x600-px.gif"));
             g.drawImage(imagen.getImage(), 0, 0, tamanio.width, tamanio.height, this);
         }
 
@@ -151,7 +151,7 @@ public class VistaBrickBreaker extends JPanel implements MouseMotionListener, Ke
 
         // Dibujar vidas con corazón
         if (imagenCorazon != null) {
-            g.drawImage(imagenCorazon, 300, 10, 30, 30, null); // Dibuja el corazón
+            g.drawImage(imagenCorazon, 300, 13, 30, 30, null); // Dibuja el corazón
             g.setColor(Color.WHITE);
             if (customFont != null) {
                 g.setFont(customFont); // Establecer la fuente personalizada
@@ -174,7 +174,7 @@ public class VistaBrickBreaker extends JPanel implements MouseMotionListener, Ke
         }
 
         // Nivel Actual
-        g.drawString("Nivel: " + (modelo.getLevelManager().getNivelActualIndex() + 1), 50, 30);
+        g.drawString("Nivel: " + (modelo.getLevelManager().getNivelActualIndex() + 1), 47, 35);
 //        g.drawString("Vidas: "+ modelo.getVidas(), 310, 30);
         // Verificar si se ganó el juego o se pasó al siguiente nivel
         if (!modelo.isPlay()) {
