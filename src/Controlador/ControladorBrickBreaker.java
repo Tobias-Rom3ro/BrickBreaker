@@ -81,7 +81,7 @@ public class ControladorBrickBreaker implements KeyListener, ActionListener {
 
             // Rebote contra la barra
             Rectangle ballRect = new Rectangle(modelo.getBallposX(), modelo.getBallposY(), 20, 20);
-            Rectangle playerRect = new Rectangle(modelo.getPlayerX(), 550, 100, 8);
+            Rectangle playerRect = new Rectangle(modelo.getPlayerX(), 535, 100, 8);
             if (ballRect.intersects(playerRect)) {
                 modelo.setBallYdir(-modelo.getBallYdir());
 

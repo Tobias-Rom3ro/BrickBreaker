@@ -1,6 +1,5 @@
 package Vista;
 
-
 import java.awt.*;
 import java.awt.Color;
 import java.awt.Font;
@@ -13,8 +12,8 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import javax.swing.*;
+import java.io.IOException;
 import java.net.URL;
-
 import Modelo.BrickBreaker;
 
 public class VistaBrickBreaker extends JPanel implements MouseMotionListener, KeyListener {
@@ -23,6 +22,9 @@ public class VistaBrickBreaker extends JPanel implements MouseMotionListener, Ke
     private Pausa pantallaPausa;
     private Image imagenPelota;
     private Image imagenBarra;
+    private Image imagenCorazon;
+    private Image imagenEstrella;
+    private Font customFont;
     private int anchoImg;
     private int altoImg;
 
@@ -30,6 +32,9 @@ public class VistaBrickBreaker extends JPanel implements MouseMotionListener, Ke
         this.modelo = modelo;
         URL urlImagen = getClass().getClassLoader().getResource("resources/imagenes/bolitaMasPeque.png");
         URL urlImagen2 = getClass().getClassLoader().getResource("resources/imagenes/barraMoradaPeque.png");
+        URL urlImagenCorazon = getClass().getClassLoader().getResource("resources/imagenes/corazon rojo neon.png");
+        URL urlImagenEstrella = getClass().getClassLoader().getResource("resources/imagenes/estrella neon.png");
+
         if(urlImagen2 != null) {
             imagenBarra = new ImageIcon(urlImagen2).getImage();
             anchoImg = imagenBarra.getWidth(null);
@@ -44,6 +49,30 @@ public class VistaBrickBreaker extends JPanel implements MouseMotionListener, Ke
         } else {
             System.err.println("No se pudo cargar la imagen de la pelota");
         }
+
+        if (urlImagenCorazon != null) {
+            imagenCorazon = new ImageIcon(urlImagenCorazon).getImage();
+        } else {
+            System.err.println("No se pudo cargar la imagen del corazón");
+        }
+
+        if (urlImagenEstrella != null) {
+            imagenEstrella = new ImageIcon(urlImagenEstrella).getImage();
+        } else {
+            System.err.println("No se pudo cargar la imagen de la estrella");
+        }
+
+        try {
+            // Carga la fuente desde el archivo .ttf
+            customFont = Font.createFont(Font.TRUETYPE_FONT, getClass().getClassLoader().getResourceAsStream("resources/fonts/Android y.ttf"));
+            customFont = customFont.deriveFont(25f); // Ajusta el tamaño de la fuente
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge.registerFont(customFont); // Registra la fuente para su uso
+        } catch (IOException | FontFormatException e) {
+            e.printStackTrace();
+            System.out.println("No se pudo cargar la fuente externa");
+        }
+
         setFocusable(true);
         requestFocusInWindow();
         addMouseMotionListener(this); // Añadir el listener de movimiento del ratón
@@ -120,14 +149,33 @@ public class VistaBrickBreaker extends JPanel implements MouseMotionListener, Ke
             g.drawImage(imagenPelota, modelo.getBallposX(), modelo.getBallposY(), null);
         }
 
-        // Puntaje
-        g.setColor(Color.WHITE);
-        g.setFont(new Font("serif", Font.BOLD, 25));
-        g.drawString("Puntaje: " + modelo.getScore(), 560, 30);
+        // Dibujar vidas con corazón
+        if (imagenCorazon != null) {
+            g.drawImage(imagenCorazon, 300, 10, 30, 30, null); // Dibuja el corazón
+            g.setColor(Color.WHITE);
+            if (customFont != null) {
+                g.setFont(customFont); // Establecer la fuente personalizada
+            } else {
+                g.setFont(new Font("serif", Font.BOLD, 25)); // Fuente por defecto en caso de error
+            }
+            g.drawString("x " + modelo.getVidas(), 340, 35); // Dibuja el número de vidas junto al corazón
+        }
+
+        // Dibujar puntaje con estrella
+        if (imagenEstrella != null) {
+            g.drawImage(imagenEstrella, 590, 10, 30, 30, null); // Dibuja la estrella
+            g.setColor(Color.WHITE);
+            if (customFont != null) {
+                g.setFont(customFont); // Establecer la fuente personalizada
+            } else {
+                g.setFont(new Font("serif", Font.BOLD, 25)); // Fuente por defecto en caso de error
+            }
+            g.drawString("" + modelo.getScore(), 630, 35); // Dibuja el puntaje junto a la estrella
+        }
 
         // Nivel Actual
         g.drawString("Nivel: " + (modelo.getLevelManager().getNivelActualIndex() + 1), 50, 30);
-        g.drawString("Vidas: "+ modelo.getVidas(), 310, 30);
+//        g.drawString("Vidas: "+ modelo.getVidas(), 310, 30);
         // Verificar si se ganó el juego o se pasó al siguiente nivel
         if (!modelo.isPlay()) {
             if (modelo.getTotalBricks() <= 0) {
