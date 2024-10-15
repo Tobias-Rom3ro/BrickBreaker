@@ -174,6 +174,7 @@ public class ControladorBrickBreaker implements KeyListener, ActionListener {
                             }
 
                             // Si todos los ladrillos han sido destruidos, avanzar al siguiente nivel
+
                             if (modelo.getTotalBricks() <= 0) {
                                 sonidoVictoria.reproducir();
                                 modelo.avanzarNivel();
