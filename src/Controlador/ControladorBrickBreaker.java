@@ -14,7 +14,7 @@ public class ControladorBrickBreaker implements KeyListener, ActionListener {
     private BrickBreaker modelo;
     private VistaBrickBreaker vista;
     private Timer timer;
-    private final int delay = 8;
+    private final int delay = 10;
 
     public ControladorBrickBreaker(BrickBreaker modelo, VistaBrickBreaker vista) {
         this.modelo = modelo;

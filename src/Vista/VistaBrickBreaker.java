@@ -24,7 +24,7 @@ public class VistaBrickBreaker extends JPanel implements MouseMotionListener, Ke
     private Image imagenBarra;
     private Image imagenCorazon;
     private Image imagenEstrella;
-    private Font customFont;
+    private Font customFont, customFont2;
     private int anchoImg;
     private int altoImg;
 
@@ -67,7 +67,11 @@ public class VistaBrickBreaker extends JPanel implements MouseMotionListener, Ke
             customFont = Font.createFont(Font.TRUETYPE_FONT, getClass().getClassLoader().getResourceAsStream("resources/fonts/Android y.ttf"));
             customFont = customFont.deriveFont(25f); // Ajusta el tamaño de la fuente
             GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-            ge.registerFont(customFont); // Registra la fuente para su uso
+            ge.registerFont(customFont);
+            customFont2 = Font.createFont(Font.TRUETYPE_FONT, getClass().getClassLoader().getResourceAsStream("resources/fonts/FUTRFW.TTF"));
+            customFont2 = customFont2.deriveFont(15f); // Ajusta el tamaño de la fuente
+            GraphicsEnvironment ge2 = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            ge2.registerFont(customFont2);
         } catch (IOException | FontFormatException e) {
             e.printStackTrace();
             System.out.println("No se pudo cargar la fuente externa");
@@ -174,7 +178,7 @@ public class VistaBrickBreaker extends JPanel implements MouseMotionListener, Ke
         }
 
         // Nivel Actual
-        g.drawString("Nivel: " + (modelo.getLevelManager().getNivelActualIndex() + 1), 47, 35);
+        g.drawString("Nivel: " + (modelo.getLevelManager().getNivelActualIndex() + 1), 35, 35);
 //        g.drawString("Vidas: "+ modelo.getVidas(), 310, 30);
         // Verificar si se ganó el juego o se pasó al siguiente nivel
         if (!modelo.isPlay()) {
@@ -195,29 +199,54 @@ public class VistaBrickBreaker extends JPanel implements MouseMotionListener, Ke
                 }
                 if (modelo.getVidas() == 0) {
                     modelo.setPlay(false);
-                    mostrarMensajeFinJuego(g, "Fin del juego. Puntaje: " + modelo.getScore(), "Presiona Enter para reiniciar.");
+                    mostrarMensajeFinJuego(g, "Fin del juego. Puntaje: " + modelo.getScore(), "PRESIONA ENTER PARA REINICIAR.");
                 }
 
-                mostrarMensajeFinJuego(g, "Fin del juego. Puntaje: " + modelo.getScore(), "Presiona Enter para reiniciar.");
+                mostrarMensajeFinJuego(g, "Fin del juego. Puntaje: " + modelo.getScore(), "PRESIONA ENTER PARA REINICIAR,");
             }
         }
     }
 
 
     private void mostrarMensajeFinJuego(Graphics g, String mensajePrincipal, String mensajeSecundario) {
-        // Dibujar un rectángulo semi-transparente como fondo del mensaje
-        g.setColor(new Color(0, 0, 0, 150)); // Negro con transparencia
-        g.fillRect(150, 250, 400, 150);
+        // Obtener el tamaño del panel
+        int panelWidth = getWidth();
+        int panelHeight = getHeight();
 
-        // Mensaje principal
+        // Establecer el fondo semi-transparente para el mensaje
+        g.setColor(new Color(0, 0, 0, 0)); // Negro con transparencia
+        g.fillRect(panelWidth / 4, panelHeight / 3, 400, 150);
+
+        // Configurar la fuente para el mensaje principal
         g.setColor(Color.WHITE);
-        g.setFont(new Font("serif", Font.BOLD, 30));
-        g.drawString(mensajePrincipal, 200, 300);
+        g.setFont(customFont);
 
-        // Mensaje secundario
-        g.setFont(new Font("serif", Font.BOLD, 20));
-        g.drawString(mensajeSecundario, 200, 350);
+        // Obtener FontMetrics para calcular el ancho del texto
+        FontMetrics fmPrincipal = g.getFontMetrics(customFont);
+        int textoAnchoPrincipal = fmPrincipal.stringWidth(mensajePrincipal);
+
+        // Calcular la posición X para centrar el mensaje principal
+        int xPrincipal = (panelWidth - textoAnchoPrincipal) / 2;
+        int yPrincipal = panelHeight / 2 - 20; // Ajustar Y según el tamaño del rectángulo
+
+        // Dibujar el mensaje principal centrado
+        g.drawString(mensajePrincipal, xPrincipal, yPrincipal);
+
+        // Configurar la fuente para el mensaje secundario
+        g.setFont(customFont2);
+
+        // Obtener FontMetrics para el mensaje secundario
+        FontMetrics fmSecundario = g.getFontMetrics(customFont2);
+        int textoAnchoSecundario = fmSecundario.stringWidth(mensajeSecundario);
+
+        // Calcular la posición X para centrar el mensaje secundario
+        int xSecundario = (panelWidth - textoAnchoSecundario) / 2;
+        int ySecundario = yPrincipal + 50; // Colocar el mensaje secundario más abajo
+
+        // Dibujar el mensaje secundario centrado
+        g.drawString(mensajeSecundario, xSecundario, ySecundario);
     }
+
 
     @Override
     public void mouseDragged(MouseEvent e) {

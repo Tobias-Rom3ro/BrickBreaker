@@ -24,7 +24,6 @@ public class MapGenerator {
     }
 
     public void cargarNivel(String archivoNivel) {
-        // Método para cargar el nivel desde un archivo (igual que antes)
         try (InputStream is = getClass().getClassLoader().getResourceAsStream(archivoNivel);
              BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
 
