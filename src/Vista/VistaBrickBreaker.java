@@ -22,12 +22,21 @@ public class VistaBrickBreaker extends JPanel implements MouseMotionListener, Ke
     private boolean isPaused = false;
     private Pausa pantallaPausa;
     private Image imagenPelota;
+    private Image imagenBarra;
     private int anchoImg;
     private int altoImg;
 
     public VistaBrickBreaker(BrickBreaker modelo) {
         this.modelo = modelo;
         URL urlImagen = getClass().getClassLoader().getResource("resources/imagenes/bolitaMasPeque.png");
+        URL urlImagen2 = getClass().getClassLoader().getResource("resources/imagenes/barraMoradaPeque.png");
+        if(urlImagen2 != null) {
+            imagenBarra = new ImageIcon(urlImagen2).getImage();
+            anchoImg = imagenBarra.getWidth(null);
+            altoImg = imagenBarra.getHeight(null);
+        }else{
+            System.out.println("No se pudo cargar la imagen");
+        }
         if (urlImagen != null) {
             imagenPelota = new ImageIcon(urlImagen).getImage();
             anchoImg = imagenPelota.getWidth(null);
@@ -99,7 +108,10 @@ public class VistaBrickBreaker extends JPanel implements MouseMotionListener, Ke
 
         // Barra
         g.setColor(Color.BLUE);
-        g.fillRect(modelo.getPlayerX(), 550, 100, 8);
+        //g.fillRect(modelo.getPlayerX(), 550, 100, 8);
+        if(imagenBarra != null){
+            g.drawImage(imagenBarra, modelo.getPlayerX(), 535, null);
+        }
 
         // Bola
         g.setColor(Color.GREEN);
@@ -178,8 +190,8 @@ public class VistaBrickBreaker extends JPanel implements MouseMotionListener, Ke
 
             // Si la pelota no ha sido lanzada, actualizar su posición para seguir la barra
             if (!modelo.isBallLanzada()) {
-                modelo.setBallposX(mouseX + 40); // Centrar la pelota sobre la barra (100 de ancho de la barra / 2 - 10 de diámetro de la pelota)
-                modelo.setBallposY(550 - 30); // Posicionar justo encima de la barra
+                modelo.setBallposX(mouseX + 28); // Centrar la pelota sobre la barra (100 de ancho de la barra / 2 - 10 de diámetro de la pelota)
+                modelo.setBallposY(550 - 40); // Posicionar justo encima de la barra
             }
 
             repaint();
