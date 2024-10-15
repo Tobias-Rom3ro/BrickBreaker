@@ -1,25 +1,30 @@
 package Modelo;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import javax.swing.ImageIcon;
 
 public class MapGenerator {
 
     private int[][] map;
     private int brickWidth;
     private int brickHeight;
+    private Image[] imagenesBloques;
 
     public MapGenerator() {
-        // Inicialización vacía; se cargará mediante cargarNivel
+        // Cargar las imágenes de los bloques
+        imagenesBloques = new Image[4]; // 0 no se usa, ya que las resistencias van de 1 a 3
+        imagenesBloques[1] = new ImageIcon(getClass().getClassLoader().getResource("resources/imagenes/BloqueResistencia1.png")).getImage();
+        imagenesBloques[2] = new ImageIcon(getClass().getClassLoader().getResource("resources/imagenes/BloqueResistencia2.png")).getImage();
+        imagenesBloques[3] = new ImageIcon(getClass().getClassLoader().getResource("resources/imagenes/BloqueResistencia3.png")).getImage();
     }
 
-    // Método para cargar un nivel desde un archivo en el classpath
     public void cargarNivel(String archivoNivel) {
+        // Método para cargar el nivel desde un archivo (igual que antes)
         try (InputStream is = getClass().getClassLoader().getResourceAsStream(archivoNivel);
              BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
 
@@ -60,7 +65,7 @@ public class MapGenerator {
 
         } catch (IOException e) {
             e.printStackTrace();
-            // En caso de error, inicializar un mapa por defecto
+            // Inicializar un mapa por defecto en caso de error
             map = new int[3][7];
             for (int i = 0; i < map.length; i++) {
                 for (int j = 0; j < map[0].length; j++) {
@@ -76,26 +81,11 @@ public class MapGenerator {
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[0].length; j++) {
                 if (map[i][j] > 0) {
-                    // Color basado en la resistencia
-                    switch (map[i][j]) {
-                        case 1:
-                            g.setColor(Color.GREEN);
-                            break;
-                        case 2:
-                            g.setColor(Color.ORANGE);
-                            break;
-                        case 3:
-                            g.setColor(Color.RED);
-                            break;
-                        default:
-                            g.setColor(Color.GRAY);
-                            break;
+                    // Seleccionar la imagen basada en la resistencia
+                    Image imagenBloque = imagenesBloques[map[i][j]];
+                    if (imagenBloque != null) {
+                        g.drawImage(imagenBloque, j * brickWidth + 80, i * brickHeight + 50, brickWidth, brickHeight, null);
                     }
-                    g.fillRect(j * brickWidth + 80, i * brickHeight + 50, brickWidth, brickHeight);
-
-                    g.setStroke(new BasicStroke(3));
-                    g.setColor(Color.WHITE);
-                    g.drawRect(j * brickWidth + 80, i * brickHeight + 50, brickWidth, brickHeight);
                 }
             }
         }
@@ -103,18 +93,8 @@ public class MapGenerator {
 
     public void setBrickValue(int row, int col) {
         if (map[row][col] > 0) {
-            map[row][col]--; // Reducir la resistencia
-            // No llamar a BrickBreaker.incrementTotalBricks()
+            map[row][col]--; // Reducir la resistencia del bloque
         }
-    }
-
-    // Getters
-    public int getBrickWidth() {
-        return brickWidth;
-    }
-
-    public int getBrickHeight() {
-        return brickHeight;
     }
 
     public int[][] getMap() {
@@ -131,5 +111,13 @@ public class MapGenerator {
             }
         }
         return total;
+    }
+
+    public int getBrickWidth() {
+        return brickWidth;
+    }
+
+    public int getBrickHeight() {
+        return brickHeight;
     }
 }

@@ -92,7 +92,7 @@ public class VistaBrickBreaker extends JPanel implements MouseMotionListener, Ke
         modelo.getMap().draw((Graphics2D) g);
 
         // Bordes del frame
-        g.setColor(Color.RED);
+        g.setColor(new Color(0,0,0,0));
         g.fillRect(0, 0, 4, 592);
         g.fillRect(0, 0, 692, 3);
         g.fillRect(691, 0, 3, 592);
