@@ -10,8 +10,8 @@ import Modelo.BrickBreaker;
 import Vista.VistaBrickBreaker;
 import java.util.Random;
 import javax.swing.JFrame;
-import javax.sound.sampled.*;
-import Vista.Sonido;
+
+import Utils.Sonido;
 
 public class ControladorBrickBreaker implements KeyListener, ActionListener {
     private BrickBreaker modelo;
