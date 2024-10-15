@@ -174,6 +174,15 @@ public class ControladorBrickBreaker implements KeyListener, ActionListener {
                             }
 
                             // Si todos los ladrillos han sido destruidos, avanzar al siguiente nivel
+                            if (!modelo.isPlay()) {
+                                if (modelo.getTotalBricks() <= 0) {
+                                    if (modelo.getLevelManager().hayMasNiveles()) {
+                                        sonidoVictoria.reproducir();
+                                    } else {
+                                        sonidoVictoria.reproducir();
+                                    }
+                                }
+                            }
                             if (modelo.getTotalBricks() <= 0) {
                                 sonidoVictoria.reproducir();
                                 modelo.avanzarNivel();
