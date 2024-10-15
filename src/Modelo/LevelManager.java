@@ -11,6 +11,7 @@ public class LevelManager {
         niveles = new ArrayList<>();
         niveles.add("nivel1.txt");
         niveles.add("nivel2.txt");
+        niveles.add("nivel3.txt");
         nivelActual = 0;
     }
 

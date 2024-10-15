@@ -4,7 +4,7 @@ import Vista.Menu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JFrame;
-import Vista.Sonido;
+import Utils.Sonido;
 
 public class ControladorMenu implements ActionListener {
     private Menu menu;

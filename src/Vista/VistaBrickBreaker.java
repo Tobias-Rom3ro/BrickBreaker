@@ -15,7 +15,7 @@ import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
 import Modelo.BrickBreaker;
-import javax.sound.sampled.*;
+import Utils.Sonido;
 
 public class VistaBrickBreaker extends JPanel implements MouseMotionListener, KeyListener {
     private BrickBreaker modelo;
@@ -157,6 +157,10 @@ public class VistaBrickBreaker extends JPanel implements MouseMotionListener, Ke
         }else if(modelo.getLevelManager().getNivelActualIndex() + 1 == 2){
             Dimension tamanio = getSize();
             ImageIcon imagen = new ImageIcon(getClass().getResource("/resources/imagenes/video-retrowave-videogame-800x600-px.gif"));
+            g.drawImage(imagen.getImage(), 0, 0, tamanio.width, tamanio.height, this);
+        }else if(modelo.getLevelManager().getNivelActualIndex() + 1 == 3){
+            Dimension tamanio = getSize();
+            ImageIcon imagen = new ImageIcon(getClass().getResource("/resources/imagenes/NivelTresFondo.gif"));
             g.drawImage(imagen.getImage(), 0, 0, tamanio.width, tamanio.height, this);
         }
 

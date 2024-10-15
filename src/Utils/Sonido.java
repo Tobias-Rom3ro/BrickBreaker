@@ -1,4 +1,4 @@
-package Vista;
+package Utils;
 
 import javax.sound.sampled.*;
 import java.io.IOException;

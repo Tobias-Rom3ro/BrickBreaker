@@ -1,5 +1,5 @@
 package Modelo;
-import Vista.Sonido;
+
 public class BrickBreaker {
     private boolean play;
     private int score;
