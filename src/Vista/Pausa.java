@@ -12,26 +12,34 @@ public class Pausa extends JFrame {
 
     public Pausa(ActionListener reanudarAction, ActionListener menuPrincipalAction ) {
         setTitle("Pantalla de Pausa");
-        setSize(400, 300);
+        setSize(400, 320);
         setLayout(null);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
+
+        FondoPanel fondoPanel = new FondoPanel("/resources/imagenes/fondoPausaOff.png");
+        fondoPanel.setLayout(null); // Usamos layout null para posicionar los componentes
+        setContentPane(fondoPanel);
+
         getContentPane().setBackground(Color.BLACK);
-        ImageIcon icono = new ImageIcon(getClass().getResource("/resources/imagenes/4K-39.png"));
-        ImageIcon icono2 = new ImageIcon(getClass().getResource("/resources/imagenes/Menu.png"));
-        botonReanudar = createButton("Reanudar", reanudarAction, Color.BLACK);
-        botonReanudar.setBounds(120, 20, 150, 80); // Asignar posición y tamaño
+        ImageIcon icono = new ImageIcon(getClass().getResource("/resources/imagenes/butReanudar.png"));
+        ImageIcon icono2 = new ImageIcon(getClass().getResource("/resources/imagenes/AlMenu.png"));
+        botonReanudar = createButton("", reanudarAction, Color.BLACK);
+        botonReanudar.setBounds(95, 50, 200, 51); // Asignar posición y tamaño
         botonReanudar.setIcon(icono);
-        botonVolumen = createButton("Menú Principal", menuPrincipalAction, Color.BLACK);
-        botonVolumen.setBounds(120, 110, 100, 50); // Asignar posición y tamaño
+        botonReanudar.setBorder(BorderFactory.createLineBorder(Color.MAGENTA));
+        botonVolumen = createButton("", menuPrincipalAction, Color.BLUE);
+        botonVolumen.setBounds(95, 120, 198, 75); // Asignar posición y tamaño
         botonVolumen.setIcon(icono2);
+        botonVolumen.setBorder(BorderFactory.createLineBorder(Color.BLUE));
         botonReanudar.setHorizontalTextPosition(SwingConstants.CENTER); // Texto centrado horizontalmente
         botonReanudar.setVerticalTextPosition(SwingConstants.BOTTOM);
         botonVolumen.setHorizontalTextPosition(SwingConstants.CENTER); // Texto centrado horizontalmente
         botonVolumen.setVerticalTextPosition(SwingConstants.BOTTOM);
         sliderVolumen = new JSlider(0, 100, 50);
         sliderVolumen.setMajorTickSpacing(20);
+        sliderVolumen.setOpaque(false);
         sliderVolumen.setPaintTicks(true);
         sliderVolumen.setPaintLabels(true);
         sliderVolumen.setForeground(Color.BLACK);
@@ -68,5 +76,21 @@ public class Pausa extends JFrame {
 
     public JSlider getSliderVolumen() {
         return sliderVolumen; // Método para obtener el slider
+    }
+
+    private class FondoPanel extends JPanel { //creamos un panel para el frame y poder poner un fondo de imagen
+        private Image imagenFondo;
+
+        public FondoPanel(String rutaImagen) {
+            // Cargar la imagen de fondo
+            imagenFondo = new ImageIcon(getClass().getResource(rutaImagen)).getImage();
+        }
+
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            // Dibujar la imagen de fondo
+            g.drawImage(imagenFondo, 0, 0, getWidth(), getHeight(), this);
+        }
     }
 }
