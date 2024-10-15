@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URL;
 import javax.swing.ImageIcon;
 
 public class MapGenerator {
@@ -18,9 +19,28 @@ public class MapGenerator {
     public MapGenerator() {
         // Cargar las imágenes de los bloques
         imagenesBloques = new Image[4]; // 0 no se usa, ya que las resistencias van de 1 a 3
-        imagenesBloques[1] = new ImageIcon(getClass().getClassLoader().getResource("resources/imagenes/BloqueResistencia1.png")).getImage();
-        imagenesBloques[2] = new ImageIcon(getClass().getClassLoader().getResource("resources/imagenes/BloqueResistencia2.png")).getImage();
-        imagenesBloques[3] = new ImageIcon(getClass().getClassLoader().getResource("resources/imagenes/BloqueResistencia3.png")).getImage();
+//        imagenesBloques[1] = new ImageIcon(getClass().getResource("/resources/imagenes/BloqueResistencia1.png")).getImage();
+//        imagenesBloques[2] = new ImageIcon(getClass().getResource("/resources/imagenes/BloqueResistencia2.png")).getImage();
+//        imagenesBloques[3] = new ImageIcon(getClass().getResource("/resources/imagenes/BloqueResistencia3.png")).getImage();
+        URL url = getClass().getResource("/resources/imagenes/BloqueResistencia1.png");
+        if (url != null) {
+            imagenesBloques[1] = new ImageIcon(url).getImage();
+        } else {
+            System.err.println("No se encontró la imagen para BloqueResistencia1");
+        }
+        URL url2 = getClass().getResource("/resources/imagenes/bloqueResistencia2.png");
+        if (url2 != null) {
+            imagenesBloques[2] = new ImageIcon(url2).getImage();
+        } else {
+            System.err.println("No se encontró la imagen para BloqueResistencia2");
+        }
+        URL url3 = getClass().getResource("/resources/imagenes/bloqueResistencia3.png");
+        if (url3 != null) {
+            imagenesBloques[3] = new ImageIcon(url3).getImage();
+        } else {
+            System.err.println("No se encontró la imagen para bloqueResistencia3");
+        }
+
     }
 
     public void cargarNivel(String archivoNivel) {

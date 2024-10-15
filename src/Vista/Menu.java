@@ -18,8 +18,8 @@ public class Menu extends JPanel {
         start.setForeground(new Color(255, 255, 255));
 
         // Cargar la imagen para el botón
-        ImageIcon icono = new ImageIcon(getClass().getResource("/resources/menuImagenes/startPequenio.png"));
-        ImageIcon icono2 = new ImageIcon(getClass().getResource("/resources/menuImagenes/exitPequenio.png"));
+        ImageIcon icono = new ImageIcon(getClass().getResource("/resources/MenuImagenes/startPequenio.png"));
+        ImageIcon icono2 = new ImageIcon(getClass().getResource("/resources/MenuImagenes/exitPequenio.png"));
         // Asignar la imagen como icono del botón
         start.setIcon(icono);
         exit.setIcon(icono2);
@@ -42,7 +42,7 @@ public class Menu extends JPanel {
     }
     public void paintComponent(Graphics g) {
         Dimension tamanio = getSize();
-        ImageIcon imagen = new ImageIcon(new ImageIcon(getClass().getResource("/resources/menuImagenes/fondomMenu.png")).getImage());
+        ImageIcon imagen = new ImageIcon(new ImageIcon(getClass().getResource("/resources/MenuImagenes/fondomMenu.png")).getImage());
         g.drawImage(imagen.getImage(), 0, 0, tamanio.width, tamanio.height, null);
     }
     public JButton getStartButton() {
