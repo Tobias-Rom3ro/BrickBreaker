@@ -12,12 +12,14 @@ public class Main {
         Color color = Color.BLACK;
         BrickBreaker modelo = new BrickBreaker();
         VistaBrickBreaker vista = new VistaBrickBreaker(modelo);
-        ControladorBrickBreaker controlador = new ControladorBrickBreaker(modelo, vista);
         JFrame menu = new JFrame("Menu juego");
+
         menu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         menu.getContentPane().setBackground(color);
 
         Vista.Menu meniu = new Menu();
+        ControladorBrickBreaker controlador = new ControladorBrickBreaker(modelo, vista, menu, ventana);
+
         menu.add(meniu);
         menu.setSize(800, 600);
         menu.setVisible(true);

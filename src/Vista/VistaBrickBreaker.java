@@ -15,6 +15,7 @@ import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
 import Modelo.BrickBreaker;
+import javax.sound.sampled.*;
 
 public class VistaBrickBreaker extends JPanel implements MouseMotionListener, KeyListener {
     private BrickBreaker modelo;
@@ -27,8 +28,11 @@ public class VistaBrickBreaker extends JPanel implements MouseMotionListener, Ke
     private Font customFont, customFont2;
     private int anchoImg;
     private int altoImg;
+    private boolean cambioMenu = false;
+    private float volumen = 50;
 
     public VistaBrickBreaker(BrickBreaker modelo) {
+
         this.modelo = modelo;
         URL urlImagen = getClass().getClassLoader().getResource("resources/imagenes/bolitaMasPeque.png");
         URL urlImagen2 = getClass().getClassLoader().getResource("resources/imagenes/barraMoradaPeque.png");
@@ -82,11 +86,26 @@ public class VistaBrickBreaker extends JPanel implements MouseMotionListener, Ke
         addMouseMotionListener(this); // Añadir el listener de movimiento del ratón
         addKeyListener(this); // Añadir el listener de teclado
     }
-
-    private void pausarJuego() {
+    public void bajarVolumen(Sonido soni){
+        soni.setVolumen(volumen);
+    }
+    public void pausarJuego() {
         isPaused = true;
         modelo.setPlay(false);
         mostrarPantallaPausa();
+    }
+
+    public void setEstadoPausa() {
+        if(isPaused) {
+            isPaused = false;
+        }
+        else{
+            isPaused = true;
+        }
+    }
+
+    public void cerrarPausa(){
+        pantallaPausa.dispose();
     }
 
     private void mostrarPantallaPausa() {
@@ -98,17 +117,30 @@ public class VistaBrickBreaker extends JPanel implements MouseMotionListener, Ke
         }, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Aquí puedes implementar la lógica para controlar el volumen
-                JOptionPane.showMessageDialog(pantallaPausa, "Control de volumen no implementado", "Info", JOptionPane.INFORMATION_MESSAGE);
+                cambioMenu = true;
             }
         });
+
+        pantallaPausa.getSliderVolumen().addChangeListener(e -> {
+            int valorVolumen = pantallaPausa.getSliderVolumen().getValue();
+            volumen = valorVolumen;
+        });
+
         pantallaPausa.setVisible(true);
+    }
+
+
+    public void setCambioMenu(){
+        cambioMenu=false;
+    }
+    public boolean isCambio(){
+        return cambioMenu;
     }
 
     private void reanudarJuego() {
         isPaused = false;
         modelo.setPlay(true);
-        pantallaPausa.dispose(); // Cerrar la pantalla de pausa
+        pantallaPausa.dispose();
         repaint();
     }
 
@@ -277,11 +309,6 @@ public class VistaBrickBreaker extends JPanel implements MouseMotionListener, Ke
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_P) {
-            if (!isPaused) {
-                pausarJuego(); // Pausar el juego si no está pausado
-            }
-        }
     }
 
     @Override

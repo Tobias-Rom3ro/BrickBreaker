@@ -1,5 +1,5 @@
 package Modelo;
-
+import Vista.Sonido;
 public class BrickBreaker {
     private boolean play;
     private int score;
@@ -15,6 +15,7 @@ public class BrickBreaker {
     private LevelManager levelManager;
     private boolean ballLanzada; // Nueva variable para controlar si la pelota ha sido lanzada
 
+
     public BrickBreaker() {
         this.play = false;
         this.score = 0;
@@ -29,6 +30,7 @@ public class BrickBreaker {
         this.ballLanzada = false;
         this.levelManager = new LevelManager();
         cargarNivelActual();
+
     }
 
     // Método para cargar el nivel actual
@@ -131,6 +133,8 @@ public class BrickBreaker {
         return ballposX;
     }
 
+
+
     public void setBallposX(int ballposX) {
         this.ballposX = ballposX;
     }
@@ -181,5 +185,11 @@ public class BrickBreaker {
 
     public int getVelocidadY() {
         return velocidadY;
+    }
+
+    public void recoveryLive(){
+        vidas = 3;
+        score = 0;
+        cargarNivelActual();
     }
 }

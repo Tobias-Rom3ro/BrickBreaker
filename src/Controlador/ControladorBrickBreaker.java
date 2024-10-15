@@ -9,19 +9,36 @@ import javax.swing.Timer;
 import Modelo.BrickBreaker;
 import Vista.VistaBrickBreaker;
 import java.util.Random;
+import javax.swing.JFrame;
+import javax.sound.sampled.*;
+import Vista.Sonido;
 
 public class ControladorBrickBreaker implements KeyListener, ActionListener {
     private BrickBreaker modelo;
     private VistaBrickBreaker vista;
     private Timer timer;
     private final int delay = 3;
-
-    public ControladorBrickBreaker(BrickBreaker modelo, VistaBrickBreaker vista) {
+    private JFrame frameMenu;
+    private JFrame frameJuego;
+    private Sonido sonidoBloque;
+    private Sonido sonidoPanel;
+    private Sonido sonidoBarra;
+    private Sonido sonidoVictoria;
+    private Sonido musicaMenu;
+    public ControladorBrickBreaker(BrickBreaker modelo, VistaBrickBreaker vista, JFrame frameMenu, JFrame frameJuego) {
         this.modelo = modelo;
         this.vista = vista;
-
+        this.frameMenu = frameMenu;
+        this.frameJuego = frameJuego;
+        sonidoBloque = new Sonido("/multimedia/SonidoChoqueBloque.wav");
+        sonidoPanel = new Sonido("/multimedia/SonidoChoquePanel.wav");
+        sonidoBarra = new Sonido("/multimedia/SonidoPuntos.wav");
+        sonidoVictoria = new Sonido("/multimedia/SonidoVictoriaNivel.wav");
+        musicaMenu = new Sonido("/multimedia/sonidoFondoPrincipal.wav");
+        musicaMenu.reproducirEnBucle();
         timer = new Timer(delay, this);
         timer.start();
+
     }
 
     @Override
@@ -36,8 +53,22 @@ public class ControladorBrickBreaker implements KeyListener, ActionListener {
                 }
             }
         }
+        else if (e.getKeyCode() == KeyEvent.VK_P) {
+            if (modelo.isBallLanzada()) {
+                vista.pausarJuego(); // Pausar el juego si no está pausado
+            }
+        }
     }
 
+    public void volverMenu(){
+        vista.cerrarPausa();
+        frameMenu.setVisible(true);  // Ocultar el frame actual
+        frameJuego.setVisible(false);
+        modelo.reiniciarPelota();
+        vista.setEstadoPausa();
+        modelo.recoveryLive();
+        vista.setCambioMenu();
+    }
     private void iniciarLanzamiento() {
         // Decidir dirección inicial aleatoriamente hacia la izquierda o derecha, asegurando que no sea cero
         Random rand = new Random();
@@ -73,13 +104,16 @@ public class ControladorBrickBreaker implements KeyListener, ActionListener {
             // Verificar colisiones con los bordes
             if (modelo.getBallposX() < 0 || modelo.getBallposX() > 670) {
                 modelo.setBallXdir(-modelo.getBallXdir());
+                sonidoBloque.reproducir();
             }
             if (modelo.getBallposY() < 0) {
                 modelo.setBallYdir(-modelo.getBallYdir());
+                sonidoBloque.reproducir();
             }
 
             if (modelo.getBallposY() > 570) {
                 modelo.setPlay(false);
+                sonidoBloque.reproducir();
             }
 
             // Rebote contra la barra
@@ -87,6 +121,7 @@ public class ControladorBrickBreaker implements KeyListener, ActionListener {
             Rectangle playerRect = new Rectangle(modelo.getPlayerX(), 535, 100, 8);
             if (ballRect.intersects(playerRect)) {
                 modelo.setBallYdir(-modelo.getBallYdir());
+                sonidoPanel.reproducir();
 
                 // Ajustar la dirección horizontal de la pelota según dónde golpea la barra
                 int paddleCenter = modelo.getPlayerX() + 50; // 50 es la mitad del ancho de la barra (100)
@@ -122,6 +157,7 @@ public class ControladorBrickBreaker implements KeyListener, ActionListener {
 
                         if (ballRect.intersects(brickRect)) {
                             modelo.getMap().setBrickValue(i, j); // Reducir resistencia
+                            sonidoBarra.reproducir(); // Reproducir sonido de la barra
 
                             // Verificar si el bloque fue destruido
                             if (modelo.getMap().getMap()[i][j] == 0) {
@@ -139,6 +175,7 @@ public class ControladorBrickBreaker implements KeyListener, ActionListener {
 
                             // Si todos los ladrillos han sido destruidos, avanzar al siguiente nivel
                             if (modelo.getTotalBricks() <= 0) {
+                                sonidoVictoria.reproducir();
                                 modelo.avanzarNivel();
                                 modelo.setPlay(false);
                                 vista.repaint();
@@ -148,8 +185,16 @@ public class ControladorBrickBreaker implements KeyListener, ActionListener {
                     }
                 }
             }
-
+            vista.bajarVolumen(sonidoBarra);
+            vista.bajarVolumen(sonidoVictoria);
+            vista.bajarVolumen(musicaMenu);
+            vista.bajarVolumen(sonidoBarra);
+            vista.bajarVolumen(sonidoPanel);
             vista.repaint(); // Redibujar la vista para actualizar el juego
+
+        }
+        if(vista.isCambio()){
+            volverMenu();
         }
     }
 }
