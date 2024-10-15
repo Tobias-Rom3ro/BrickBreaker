@@ -4,6 +4,7 @@ public class BrickBreaker {
     private boolean play;
     private int score;
     private int vidas;
+    private int velocidadX, velocidadY;
     private int totalBricks;
     private int playerX;
     private int ballposX;
@@ -18,6 +19,8 @@ public class BrickBreaker {
         this.play = false;
         this.score = 0;
         this.vidas = 3;
+        this.velocidadX = 5;
+        this.velocidadY = 5;
         this.playerX = 310;
         this.ballposX = 310; // Posición inicial centrada sobre la barra
         this.ballposY = 550 - 20; // Posicionar justo encima de la barra
@@ -47,6 +50,7 @@ public class BrickBreaker {
         if (levelManager.hayMasNiveles()) {
             levelManager.avanzarNivel();
             cargarNivelActual();
+            aumentarVelocidad();
         } else {
             // Manejar caso donde no hay más niveles (e.g., mostrar mensaje de victoria final)
             setPlay(false);
@@ -55,8 +59,8 @@ public class BrickBreaker {
 
     // Método para reiniciar la pelota
     public void reiniciarPelota() {
-        this.ballposX = this.playerX + 40; // Centrar la pelota sobre la barra (100 de ancho de la barra / 2 - 10 de diámetro de la pelota)
-        this.ballposY = 550 - 30; // Posicionar justo encima de la barra
+        this.ballposX = this.playerX + 28; // Centrar la pelota sobre la barra (100 de ancho de la barra / 2 - 10 de diámetro de la pelota)
+        this.ballposY = 550 - 40; // Posicionar justo encima de la barra
         this.ballXdir = 0;
         this.ballYdir = 0;
         this.ballLanzada = false;
@@ -85,7 +89,9 @@ public class BrickBreaker {
         return score;
     }
 
-    public int getVidas() { return vidas; }
+    public int getVidas() {
+        return vidas;
+    }
 
     public void incrementScore(int value) {
         this.score += value;
@@ -93,24 +99,36 @@ public class BrickBreaker {
     public void decrementarVidas(){
         this.vidas --;
     }
+    private void aumentarVelocidad() {
+        // Aumentar la velocidad en un porcentaje
+        ballposX += velocidadX;
+        ballposY += velocidadY;
+        velocidadX = (int) (velocidadX * 1.7); // Aumento del 70%
+        velocidadY = (int) (velocidadY * 1.7);
+    }
 
     public int getTotalBricks() {
+
         return totalBricks;
     }
 
     public void decrementTotalBricks() {
+
         this.totalBricks--;
     }
 
     public int getPlayerX() {
+
         return playerX;
     }
 
     public void setPlayerX(int playerX) {
+
         this.playerX = playerX;
     }
 
     public int getBallposX() {
+
         return ballposX;
     }
 
